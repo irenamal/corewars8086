@@ -8,16 +8,19 @@ public class WarriorGroup {
     private ArrayList<WarriorData> warriorData;
     private List<Float> scores;
     private float groupScore;
+    private List<Float> aliveTime;
 
     public WarriorGroup(String name) {
         this.name = name;
         warriorData = new ArrayList<>();
         scores = new ArrayList<>();
+        aliveTime = new ArrayList<>();
     }
 
     public void addWarrior(WarriorData data) {
         warriorData.add(data);
         scores.add(0f);
+        aliveTime.add(0f);
     }
 
     public List<WarriorData> getWarriors() {
@@ -36,6 +39,10 @@ public class WarriorGroup {
         return groupScore;
     }
 
+    public List<Float> getAliveTime() {
+        return aliveTime;
+    }
+
     public int addScoreToWarrior(String name, float value) {
         // find this warrior
         int i;
@@ -46,6 +53,19 @@ public class WarriorGroup {
             }
         }
         groupScore += value;
+        return i;
+    }
+
+    public int addAliveTimeToWarrior(String name, float value) {
+        // find this warrior
+        int i;
+        for (i = 0; i < warriorData.size(); i++) {
+            if (warriorData.get(i).getName().equals(name)) {
+                aliveTime.set(i, aliveTime.get(i) + value);
+                break;
+            }
+        }
+        //groupScore += value;
         return i;
     }
 }

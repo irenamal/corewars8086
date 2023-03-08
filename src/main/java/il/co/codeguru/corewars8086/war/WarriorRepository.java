@@ -53,6 +53,16 @@ public class WarriorRepository {
         scoreListener.scoreChanged(name, value, groupIndex, subIndex);
     }
 
+    public void addAliveTime(String name, float value) {
+        Integer groupIndex = warriorNameToGroup.get(name);
+        if (groupIndex == null) {// zombies
+            return;
+        }
+        WarriorGroup group = warriorGroups.get(groupIndex);
+        int subIndex = group.addAliveTimeToWarrior(name, value);
+        // scoreListener.scoreChanged(name, value, groupIndex, subIndex);
+    }
+
     public int getNumberOfGroups() {
         return warriorGroups.size();
     }
@@ -220,9 +230,10 @@ public class WarriorRepository {
             ps.print("\nWarriors:\n");
             for (WarriorGroup group : warriorGroups) {
                 List<Float> scores = group.getScores();
+                List<Float> aliveTime = group.getAliveTime();
                 List<WarriorData> data = group.getWarriors();
                 for (int i = 0; i < scores.size(); i++) {
-                    ps.print(data.get(i).getName() + "," + scores.get(i) + "\n");
+                    ps.print(data.get(i).getName() + "," + scores.get(i) + "," + aliveTime.get(i) +  "\n");
                 }
             }
         } catch (IOException e) {

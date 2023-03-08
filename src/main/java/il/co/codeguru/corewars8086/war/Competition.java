@@ -3,8 +3,10 @@ package il.co.codeguru.corewars8086.war;
 import il.co.codeguru.corewars8086.cli.Options;
 import il.co.codeguru.corewars8086.memory.MemoryEventListener;
 import il.co.codeguru.corewars8086.utils.EventMulticaster;
+import org.apache.commons.math3.util.Precision;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -118,12 +120,21 @@ public class Competition {
         currentWar.setSeed(this.seed);
         competitionEventListener.onWarStart(seed);
         currentWar.loadWarriorGroups(warriorGroups);
+        // create array of staying alive time
+        String names;
+        String[] warriors;
+        final HashMap<String, Float> alive_time = new HashMap<>();
 
         // go go go!
         int round = 0;
         while (round < MAX_ROUND) {
             competitionEventListener.onRound(round);
-
+            names = currentWar.getRemainingWarriorNames();
+            names = names.replace(" ", ""); //avoid spaces
+            warriors = names.split(",");
+            for (String warrior : warriors) {
+                alive_time.put(warrior, (float) round);
+            }
             competitionEventListener.onEndRound();
 
             // apply speed limits
@@ -157,7 +168,7 @@ public class Competition {
         competitionEventListener.onRound(round);
 
         int numAlive = currentWar.getNumRemainingWarriors();
-        String names = currentWar.getRemainingWarriorNames();
+        names = currentWar.getRemainingWarriorNames();
 
         if (numAlive == 1) { // we have a single winner!
             competitionEventListener.onWarEnd(CompetitionEventListener.SINGLE_WINNER, names);
@@ -167,6 +178,9 @@ public class Competition {
             competitionEventListener.onWarEnd(CompetitionEventListener.ABORTED, names);
         }
         currentWar.updateScores(warriorRepository);
+        int finalRound = round; // we're here after the war termination
+        alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
+        currentWar.updateAliveTime(warriorRepository, alive_time);
         currentWar = null;
     }
   
@@ -185,10 +199,19 @@ public class Competition {
   
     competitionEventListener.onWarStart(seed);
     war.loadWarriorGroups(warriorGroups);
+    String names;
+    String[] warriors;
+    final HashMap<String, Float> alive_time = new HashMap<>();
     
     int round = 0;
     while (round < MAX_ROUND) {
       competitionEventListener.onRound(round);
+      names = currentWar.getRemainingWarriorNames();
+      names = names.replace(" ", ""); //avoid spaces
+      warriors = names.split(",");
+      for (String warrior : warriors) {
+          alive_time.put(warrior, (float) round);
+      }
       competitionEventListener.onEndRound();
       
      if (selectedAsCurrent && speed != MAXIMUM_SPEED) {
@@ -208,7 +231,7 @@ public class Competition {
     competitionEventListener.onRound(round);
     
     int numAlive = war.getNumRemainingWarriors();
-    String names = war.getRemainingWarriorNames();
+    names = war.getRemainingWarriorNames();
     
     if (numAlive == 1) { // we have a single winner!
       competitionEventListener.onWarEnd(CompetitionEventListener.SINGLE_WINNER, names);
@@ -217,7 +240,7 @@ public class Competition {
     } else { // user abort
       competitionEventListener.onWarEnd(CompetitionEventListener.ABORTED, names);
     }
-    
+
     if (selectedAsCurrent) {
       synchronized (this) {
         this.currentWar = null;
@@ -226,6 +249,9 @@ public class Competition {
     
     synchronized (warriorRepository) {
       war.updateScores(warriorRepository);
+      int finalRound = round; // we're here after the war termination
+      alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
+      war.updateAliveTime(warriorRepository, alive_time);
     }
   }
   

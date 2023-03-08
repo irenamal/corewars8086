@@ -19,6 +19,7 @@ public class CoreWarsEngine {
       CompetitionWindow c = new CompetitionWindow(options);
       c.setVisible(true);
       c.pack();
+      c.ClickStart();
     }
   }
 }

@@ -9,6 +9,7 @@ import il.co.codeguru.corewars8086.memory.RealModeMemoryImpl;
 import il.co.codeguru.corewars8086.utils.Unsigned;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -372,7 +373,7 @@ public class War {
             }
     	}
     	return names;
-    }    
+    }
  
     /**
      * Updates the scores in a given score-board.
@@ -387,6 +388,14 @@ public class War {
                 scoreBoard.addScore(warrior.getName(), 0);
             }*/
     	}
+    }
+
+    public void updateAliveTime(WarriorRepository repository, HashMap<String, Float> alive_time) {
+        for (int i = 0; i < m_numWarriors; ++i) {
+            Warrior warrior = m_warriors[i];
+            String name = warrior.getName();
+            repository.addAliveTime(warrior.getName(), alive_time.get(name));
+        }
     }
     
     private Random rand = new Random();

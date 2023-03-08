@@ -12,7 +12,7 @@ public class Options extends OptionsBase {
       abbrev = 'h',
       help = "Run the engine in headless mode",
       category = "Startup",
-      defaultValue = "false"
+      defaultValue = "true"
   )
   public boolean headless;
   
@@ -30,7 +30,7 @@ public class Options extends OptionsBase {
       abbrev = 'b',
       help = "Battles per group combination",
       category = "Gameplay",
-      defaultValue = "100"
+      defaultValue = "2"
   )
   public int battlesPerCombo;
   
@@ -65,7 +65,7 @@ public class Options extends OptionsBase {
       abbrev = 't',
       help = "Number of threads for parallel mode",
       category = "Concurrency",
-      defaultValue = "4"
+      defaultValue = "8"
   )
   public int threads;
   

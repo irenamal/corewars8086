@@ -92,7 +92,7 @@ public class CompetitionWindow extends JFrame
         warriorsPerGroupField = new JTextField(String.format("%d", numberOfGroups), 3);
         controlPanel.add(warriorsPerGroupField);
         controlPanel.add(new JLabel("Wars per groups combination:"));
-        battlesPerGroupField = new JTextField("100", 4);
+        battlesPerGroupField = new JTextField("2", 4);
         controlPanel.add(battlesPerGroupField);
         seed = new JTextField(15);
         seed.setText("guru");
@@ -315,5 +315,8 @@ public class CompetitionWindow extends JFrame
     @Override
     public void onEndRound() {
     }
-    
+
+    public void ClickStart() {
+        runWarButton.doClick();
+    }
 }
