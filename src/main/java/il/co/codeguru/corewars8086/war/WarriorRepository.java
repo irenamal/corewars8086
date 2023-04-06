@@ -204,9 +204,16 @@ public class WarriorRepository {
         ArrayList<WarriorGroup> groupsList = new ArrayList<WarriorGroup>();
 
         // add requested warrior groups
+        boolean group_with_try_warrior = false;
         for (int groupIndex : groupIndices) {
-          groupsList.add(warriorGroups.get(groupIndex));
+          WarriorGroup warrior = warriorGroups.get(groupIndex);
+          groupsList.add(warrior);
+          if (warrior.getName().matches("[0-9]+try"))
+            group_with_try_warrior = true;
         }
+
+        if (! group_with_try_warrior)
+            return null;
 
         // add zombies (if exist)
         if (zombieGroup != null) {

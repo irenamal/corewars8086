@@ -86,12 +86,16 @@ public class Competition {
       executorService = Executors.newFixedThreadPool(threads);
   
       for (int warCount = 0; warCount < getTotalNumberOfWars(); warCount++) {
-        WarriorGroup[] groups = warriorRepository.createGroupList(competitionIterator.next());
+        WarriorGroup[] groups;
+        do {
+            groups = warriorRepository.createGroupList(competitionIterator.next());
+        } while (groups == null);
         int id = warCount;
         long warSeed = seed++;
-        executorService.submit(() -> {
+          WarriorGroup[] finalGroups = groups;
+          executorService.submit(() -> {
           try {
-            runWarInParallel(groups, warSeed, id);
+            runWarInParallel(finalGroups, warSeed, id);
           } catch (Exception e) {
             throw new RuntimeException(e);
           }

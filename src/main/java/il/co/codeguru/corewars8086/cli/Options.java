@@ -69,7 +69,7 @@ public class Options extends OptionsBase {
       abbrev = 't',
       help = "Number of threads for parallel mode",
       category = "Concurrency",
-      defaultValue = "8"
+      defaultValue = "32"
   )
   public int threads;
   
