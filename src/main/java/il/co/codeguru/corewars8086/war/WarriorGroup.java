@@ -9,18 +9,21 @@ public class WarriorGroup {
     private List<Float> scores;
     private float groupScore;
     private List<Float> aliveTime;
+    private List<Float> bytesWritten;
 
     public WarriorGroup(String name) {
         this.name = name;
         warriorData = new ArrayList<>();
         scores = new ArrayList<>();
         aliveTime = new ArrayList<>();
+        bytesWritten = new ArrayList<>();
     }
 
     public void addWarrior(WarriorData data) {
         warriorData.add(data);
         scores.add(0f);
         aliveTime.add(0f);
+        bytesWritten.add(0f);
     }
 
     public List<WarriorData> getWarriors() {
@@ -39,20 +42,22 @@ public class WarriorGroup {
         return groupScore;
     }
 
-    public List<Float> getAliveTime() {
-        return aliveTime;
-    }
+    public List<Float> getAliveTime() { return aliveTime; }
 
-    public int addScoreToWarrior(String name, float value) {
+    public List<Float> getBytesWritten() { return bytesWritten; }
+
+    public int addScoreToWarrior(String name, float score, float alive, float bytes) {
         // find this warrior
         int i;
         for (i = 0; i < warriorData.size(); i++) {
             if (warriorData.get(i).getName().equals(name)) {
-                scores.set(i, scores.get(i) + value);
+                scores.set(i, scores.get(i) + score);
+                aliveTime.set(i, aliveTime.get(i) + alive);
+                bytesWritten.set(i, bytesWritten.get(i) + bytes);
                 break;
             }
         }
-        groupScore += value;
+        groupScore += score;
         return i;
     }
 
@@ -66,6 +71,18 @@ public class WarriorGroup {
             }
         }
         //groupScore += value;
+        return i;
+    }
+
+    public int addBytesWrittenToWarrior(String name, int value) {
+        // find this warrior
+        int i;
+        for (i = 0; i < warriorData.size(); i++) {
+            if (warriorData.get(i).getName().equals(name)) {
+                bytesWritten.set(i, bytesWritten.get(i) + value);
+                break;
+            }
+        }
         return i;
     }
 }

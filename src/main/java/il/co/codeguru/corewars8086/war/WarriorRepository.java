@@ -43,14 +43,14 @@ public class WarriorRepository {
         scoreEventsCaster.add(lis);
     }
 
-    public void addScore(String name, float value) {
+    public void addScore(String name, float score, float alive, float bytes) {
         Integer groupIndex = warriorNameToGroup.get(name);
         if (groupIndex == null) {// zombies
             return;
         }
         WarriorGroup group = warriorGroups.get(groupIndex);
-        int subIndex = group.addScoreToWarrior(name, value);
-        scoreListener.scoreChanged(name, value, groupIndex, subIndex);
+        int subIndex = group.addScoreToWarrior(name, score, alive, bytes);
+        scoreListener.scoreChanged(name, score, groupIndex, subIndex);
     }
 
     public void addAliveTime(String name, float value) {
@@ -239,8 +239,10 @@ public class WarriorRepository {
                 List<Float> scores = group.getScores();
                 List<Float> aliveTime = group.getAliveTime();
                 List<WarriorData> data = group.getWarriors();
+                List<Float> bytesWritten = group.getBytesWritten();
                 for (int i = 0; i < scores.size(); i++) {
-                    ps.print(data.get(i).getName() + "," + scores.get(i) + "," + aliveTime.get(i) +  "\n");
+                    ps.print(data.get(i).getName() + "," + scores.get(i) + "," + aliveTime.get(i) + "," +
+                             bytesWritten.get(i) + "\n");
                 }
             }
         } catch (IOException e) {

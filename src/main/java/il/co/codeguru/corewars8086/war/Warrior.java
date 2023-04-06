@@ -83,7 +83,8 @@ public class Warrior {
 
         m_cpu = new Cpu(m_state, m_memory);
 
-        m_isAlive = true;		
+        m_isAlive = true;
+        m_bytesWritten = 0;
     }
 
     /**
@@ -140,13 +141,15 @@ public class Warrior {
         m_state.setEnergy(value);
     }
 
+    public int getBytesWritten() { return m_bytesWritten; }
+
     /**
      * Performs the warrior's next turn (= next opcode).
      * @throws CpuException     on any CPU error.
      * @throws MemoryException  on any Memory error.
      */
     public void nextOpcode() throws CpuException, MemoryException {
-        m_cpu.nextOpcode();
+        m_bytesWritten += m_cpu.nextOpcode();
     }
 
     /**
@@ -213,4 +216,7 @@ public class Warrior {
     private boolean m_isAlive;
 
     private final WarriorType type;
+
+    /** The number of bytes the warrior wrote to memory **/
+    private int m_bytesWritten;
 }

@@ -16,7 +16,7 @@ public class Options extends OptionsBase {
       abbrev = 'h',
       help = "Run the engine in headless mode",
       category = "Startup",
-      defaultValue = "true"
+      defaultValue = "false"
   )
   public boolean headless;
   

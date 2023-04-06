@@ -181,10 +181,11 @@ public class Competition {
         } else { // user abort
             competitionEventListener.onWarEnd(CompetitionEventListener.ABORTED, names);
         }
-        currentWar.updateScores(warriorRepository);
+
         int finalRound = round; // we're here after the war termination
         alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
-        currentWar.updateAliveTime(warriorRepository, alive_time);
+        currentWar.updateScores(warriorRepository, alive_time);
+        //currentWar.updateAliveTime(warriorRepository, alive_time);
         currentWar = null;
     }
   
@@ -252,10 +253,10 @@ public class Competition {
     }
     
     synchronized (warriorRepository) {
-      war.updateScores(warriorRepository);
       int finalRound = round; // we're here after the war termination
       alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
-      war.updateAliveTime(warriorRepository, alive_time);
+      war.updateScores(warriorRepository, alive_time);
+      //war.updateAliveTime(warriorRepository, alive_time);
     }
   }
   

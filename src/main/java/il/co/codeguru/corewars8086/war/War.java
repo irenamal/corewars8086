@@ -7,6 +7,7 @@ import il.co.codeguru.corewars8086.memory.MemoryException;
 import il.co.codeguru.corewars8086.memory.RealModeAddress;
 import il.co.codeguru.corewars8086.memory.RealModeMemoryImpl;
 import il.co.codeguru.corewars8086.utils.Unsigned;
+import org.apache.commons.math3.util.Precision;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -378,15 +379,17 @@ public class War {
     /**
      * Updates the scores in a given score-board.
      */
-    public void updateScores(WarriorRepository repository) {
+    public void updateScores(WarriorRepository repository, HashMap<String, Float> alive_time) {
         float score = (float)1.0 / m_numWarriorsAlive;
     	for (int i = 0; i < m_numWarriors; ++i) {
             Warrior warrior = m_warriors[i];
             if (warrior.isAlive()) {
-                repository.addScore(warrior.getName(), score);
-            } /*else {    			
-                scoreBoard.addScore(warrior.getName(), 0);
-            }*/
+                repository.addScore(warrior.getName(), score, alive_time.get(warrior.getName()),
+                        Precision.round((float)warrior.getBytesWritten()/ (ARENA_SIZE + STACK_SIZE), 3));
+            } else {
+                repository.addScore(warrior.getName(), 0, alive_time.get(warrior.getName()),
+                        Precision.round((float)warrior.getBytesWritten()/ (ARENA_SIZE + STACK_SIZE), 3));
+            }
     	}
     }
 
