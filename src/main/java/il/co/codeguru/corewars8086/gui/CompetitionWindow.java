@@ -165,6 +165,7 @@ public class CompetitionWindow extends JFrame
                         } else {
                             competition.runCompetition(battlesPerGroup, warriorsPerGroup, startPausedCheckBox.isSelected());
                         }
+                        System.exit(0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

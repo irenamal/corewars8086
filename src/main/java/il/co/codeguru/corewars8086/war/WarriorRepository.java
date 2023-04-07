@@ -230,11 +230,12 @@ public class WarriorRepository {
         
         try (FileOutputStream fos = new FileOutputStream(filename)) {
             PrintStream ps = new PrintStream(fos);
-            ps.print("Groups:\n");
+            ps.print("Groups:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
-                ps.print(group.getName() + "," + group.getGroupScore() + "\n");
+                ps.print(group.getName() + "," + group.getGroupScore() + "," +
+                         Collections.max(group.getAliveTime()) + "," + group.getGroupBytes() + "\n");
             }
-            ps.print("\nWarriors:\n");
+            ps.print("\nWarriors:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
                 List<Float> scores = group.getScores();
                 List<Float> aliveTime = group.getAliveTime();

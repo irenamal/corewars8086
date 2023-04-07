@@ -8,6 +8,7 @@ public class WarriorGroup {
     private ArrayList<WarriorData> warriorData;
     private List<Float> scores;
     private float groupScore;
+    private float groupBytes;
     private List<Float> aliveTime;
     private List<Float> bytesWritten;
 
@@ -42,6 +43,10 @@ public class WarriorGroup {
         return groupScore;
     }
 
+    public float getGroupBytes() {
+        return groupBytes;
+    }
+
     public List<Float> getAliveTime() { return aliveTime; }
 
     public List<Float> getBytesWritten() { return bytesWritten; }
@@ -58,6 +63,8 @@ public class WarriorGroup {
             }
         }
         groupScore += score;
+        groupBytes += bytes;
+
         return i;
     }
 
