@@ -30,7 +30,7 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
   
   public HeadlessCompetitionRunner(Options options) throws IOException {
     this.options = options;
-    System.out.println("CoreWars8086 - headless mode\n");
+    //System.out.println("CoreWars8086 - headless mode\n");
     
     this.competition = new Competition(options);
     this.competition.addCompetitionEventListener(this);
