@@ -35,7 +35,7 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
     this.competition = new Competition(options);
     this.competition.addCompetitionEventListener(this);
     WarriorRepository repository = competition.getWarriorRepository();
-    System.out.printf("Loaded warriors: %s%n", Arrays.toString(repository.getGroupNames()));
+    //System.out.printf("Loaded warriors: %s%n", Arrays.toString(repository.getGroupNames()));
     repository.addScoreEventListener(this);
   
     if (Longs.tryParse(options.seed) != null) this.seed = Long.parseLong(options.seed);
@@ -85,7 +85,7 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
   @Override
   public void onWarEnd(int reason, String winners) {
     warCounter++;
-    progressBar.stepTo(warCounter);
+    //progressBar.stepTo(warCounter);
   }
   
   @Override
@@ -108,19 +108,19 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
     warCounter = 0;
     totalWars = competition.getTotalNumberOfWars();
     competition.setAbort(false);
-    System.out.printf("Starting competition (%d wars)%s.%n", totalWars, options.parallel ? " in parallel" : "");
-    progressBar = new ProgressBarBuilder()
-        .setTaskName("Running wars")
-        .setStyle(ProgressBarStyle.ASCII)
-        .setInitialMax(totalWars)
-        .showSpeed()
-        .build();
+    // System.out.printf("Starting competition (%d wars)%s.%n", totalWars, options.parallel ? " in parallel" : "");
+    // progressBar = new ProgressBarBuilder()
+    //        .setTaskName("Running wars")
+    //        .setStyle(ProgressBarStyle.ASCII)
+    //        .setInitialMax(totalWars)
+    //        .showSpeed()
+    //        .build();
   }
   
   @Override
   public void onCompetitionEnd() {
-    progressBar.close();
-    System.out.printf("Competition is over. Ran %d wars%n", warCounter);
+    //progressBar.close();
+    //System.out.printf("Competition is over. Ran %d wars%n", warCounter);
     warThread = null;
   }
   

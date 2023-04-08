@@ -226,7 +226,7 @@ public class WarriorRepository {
     }
 
     public void saveScoresToFile(String filename) {
-        System.out.printf("Writing scores to file %s%n", filename);
+        //System.out.printf("Writing scores to file %s%n", filename);
         
         try (FileOutputStream fos = new FileOutputStream(filename)) {
             PrintStream ps = new PrintStream(fos);
