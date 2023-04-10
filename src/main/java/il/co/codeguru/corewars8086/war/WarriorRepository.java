@@ -206,9 +206,9 @@ public class WarriorRepository {
         // add requested warrior groups
         boolean group_with_try_warrior = false;
         for (int groupIndex : groupIndices) {
-          WarriorGroup warrior = warriorGroups.get(groupIndex);
-          groupsList.add(warrior);
-          if (warrior.getName().matches("[0-9]+try"))
+          WarriorGroup group = warriorGroups.get(groupIndex);
+          groupsList.add(group);
+          if (group.getName().matches("[0-9]+try"))
             group_with_try_warrior = true;
         }
 

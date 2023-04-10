@@ -87,9 +87,9 @@ public class Competition {
   
       for (int warCount = 0; warCount < getTotalNumberOfWars(); warCount++) {
         WarriorGroup[] groups;
-        do {
-            groups = warriorRepository.createGroupList(competitionIterator.next());
-        } while (groups == null);
+        groups = warriorRepository.createGroupList(competitionIterator.next());
+        if (null == groups) // skip wars without my survivor
+            continue;
         int id = warCount;
         long warSeed = seed++;
           WarriorGroup[] finalGroups = groups;
