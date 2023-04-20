@@ -75,7 +75,7 @@ public class Competition {
 			      }
         }
         competitionEventListener.onCompetitionEnd();
-        warriorRepository.saveScoresToFile(SCORE_FILENAME);
+        warriorRepository.saveScoresToFile(SCORE_FILENAME, getTotalNumberOfWars());
     }
     
     public void runCompetitionInParallel(int warsPerCombination, int warriorsPerGroup, int threads) throws InterruptedException {
@@ -112,7 +112,7 @@ public class Competition {
       executorService = null;
   
       competitionEventListener.onCompetitionEnd();
-      warriorRepository.saveScoresToFile(options.outputFile);
+      warriorRepository.saveScoresToFile(options.outputFile, getTotalNumberOfWars());
     }
 
     public int getTotalNumberOfWars() {
@@ -184,7 +184,7 @@ public class Competition {
 
         int finalRound = round; // we're here after the war termination
         alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
-        currentWar.updateScores(warriorRepository, alive_time);
+        currentWar.updateScores(warriorRepository, alive_time, finalRound);
         //currentWar.updateAliveTime(warriorRepository, alive_time);
         currentWar = null;
     }
@@ -255,7 +255,7 @@ public class Competition {
     synchronized (warriorRepository) {
       int finalRound = round; // we're here after the war termination
       alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
-      war.updateScores(warriorRepository, alive_time);
+      war.updateScores(warriorRepository, alive_time, finalRound);
       //war.updateAliveTime(warriorRepository, alive_time);
     }
   }

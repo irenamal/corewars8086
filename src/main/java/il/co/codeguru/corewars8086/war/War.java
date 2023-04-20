@@ -379,16 +379,16 @@ public class War {
     /**
      * Updates the scores in a given score-board.
      */
-    public void updateScores(WarriorRepository repository, HashMap<String, Float> alive_time) {
+    public void updateScores(WarriorRepository repository, HashMap<String, Float> alive_time, int finalRound) {
         float score = (float)1.0 / m_numWarriorsAlive;
     	for (int i = 0; i < m_numWarriors; ++i) {
             Warrior warrior = m_warriors[i];
             if (warrior.isAlive()) {
                 repository.addScore(warrior.getName(), score, alive_time.get(warrior.getName()),
-                        Precision.round((float)warrior.getBytesWritten()/ (ARENA_SIZE + STACK_SIZE), 3));
+                        Precision.round((float)warrior.getBytesWritten()/ (2 * finalRound), 3));
             } else {
                 repository.addScore(warrior.getName(), 0, alive_time.get(warrior.getName()),
-                        Precision.round((float)warrior.getBytesWritten()/ (ARENA_SIZE + STACK_SIZE), 3));
+                        Precision.round((float)warrior.getBytesWritten()/ (2 * finalRound), 3));
             }
     	}
     }

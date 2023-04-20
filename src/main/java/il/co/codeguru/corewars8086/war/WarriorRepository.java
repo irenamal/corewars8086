@@ -225,15 +225,15 @@ public class WarriorRepository {
         return groups;
     }
 
-    public void saveScoresToFile(String filename) {
+    public void saveScoresToFile(String filename, int totalwars) {
         //System.out.printf("Writing scores to file %s%n", filename);
         
         try (FileOutputStream fos = new FileOutputStream(filename)) {
             PrintStream ps = new PrintStream(fos);
             ps.print("Groups:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
-                ps.print(group.getName() + "," + group.getGroupScore() + "," +
-                         Collections.max(group.getAliveTime()) + "," + group.getGroupBytes() + "\n");
+                ps.print(group.getName() + "," + group.getGroupScore()/totalwars + "," +
+                         Collections.max(group.getAliveTime())/totalwars + "," + group.getGroupBytes()/totalwars + "\n");
             }
             ps.print("\nWarriors:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
@@ -242,8 +242,8 @@ public class WarriorRepository {
                 List<WarriorData> data = group.getWarriors();
                 List<Float> bytesWritten = group.getBytesWritten();
                 for (int i = 0; i < scores.size(); i++) {
-                    ps.print(data.get(i).getName() + "," + scores.get(i) + "," + aliveTime.get(i) + "," +
-                             bytesWritten.get(i) + "\n");
+                    ps.print(data.get(i).getName() + "," + scores.get(i)/totalwars + "," + aliveTime.get(i)/totalwars + "," +
+                             bytesWritten.get(i)/totalwars + "\n");
                 }
             }
         } catch (IOException e) {
