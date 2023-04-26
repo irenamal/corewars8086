@@ -1173,14 +1173,12 @@ public class Cpu {
                 switch (nextOpcode) {
                     case (byte)0xA4: // REP MOVSB
                         if (!doneLooping) {
-                            movsb();
-                            bytes += 1;
+                            bytes += movsb();
                         }
                         break;
                     case (byte)0xA5: // REP MOVSW
                         if (!doneLooping) {
-                            movsw();
-                            bytes += 2;
+                            bytes += movsw();
                         }
                         break;
                     case (byte)0xA6: // REPZ CMPSB
@@ -1197,14 +1195,12 @@ public class Cpu {
                         break;
                     case (byte)0xAA: // REP STOSB
                         if (!doneLooping) {
-                            stosb();
-                            bytes += 1;
+                            bytes += stosb();
                         }
                         break;				
                     case (byte)0xAB: // REP STOSW
                         if (!doneLooping) {
-                            stosw();
-                            bytes += 2;
+                            bytes += stosw();
                         }
                         break;				
                     case (byte)0xAC: // REP LODSB

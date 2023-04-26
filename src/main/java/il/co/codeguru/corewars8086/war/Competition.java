@@ -67,15 +67,20 @@ public class Competition {
 
         // run on every possible combination of warrior groups
         competitionEventListener.onCompetitionStart();
+        int runWarCount = 0;
         for (int warCount = 0; warCount < getTotalNumberOfWars(); warCount++) {
-            runWar(warriorRepository.createGroupList(competitionIterator.next()), startPaused);
+            WarriorGroup[] groups = warriorRepository.createGroupList(competitionIterator.next());
+            if (null == groups) // skip wars without my survivor
+                continue;
+            runWarCount++;
+            runWar(groups, startPaused);
             seed ++;
             if (abort) {
 				        break;
 			      }
         }
         competitionEventListener.onCompetitionEnd();
-        warriorRepository.saveScoresToFile(SCORE_FILENAME, getTotalNumberOfWars());
+        warriorRepository.saveScoresToFile(SCORE_FILENAME, runWarCount);
     }
     
     public void runCompetitionInParallel(int warsPerCombination, int warriorsPerGroup, int threads) throws InterruptedException {
@@ -84,12 +89,14 @@ public class Competition {
       competitionEventListener.onCompetitionStart();
   
       executorService = Executors.newFixedThreadPool(threads);
-  
+
+      int runWarCount = 0;
       for (int warCount = 0; warCount < getTotalNumberOfWars(); warCount++) {
         WarriorGroup[] groups;
         groups = warriorRepository.createGroupList(competitionIterator.next());
         if (null == groups) // skip wars without my survivor
             continue;
+        runWarCount++;
         int id = warCount;
         long warSeed = seed++;
           WarriorGroup[] finalGroups = groups;
@@ -112,7 +119,7 @@ public class Competition {
       executorService = null;
   
       competitionEventListener.onCompetitionEnd();
-      warriorRepository.saveScoresToFile(options.outputFile, getTotalNumberOfWars());
+      warriorRepository.saveScoresToFile(options.outputFile, runWarCount);
     }
 
     public int getTotalNumberOfWars() {

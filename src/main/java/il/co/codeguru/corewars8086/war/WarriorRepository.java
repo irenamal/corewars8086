@@ -233,7 +233,7 @@ public class WarriorRepository {
             ps.print("Groups:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
                 ps.print(group.getName() + "," + group.getGroupScore()/totalwars + "," +
-                         Collections.max(group.getAliveTime())/totalwars + "," + group.getGroupBytes()/totalwars + "\n");
+                         Collections.max(group.getAliveTime())/totalwars + "," + group.getGroupBytes()/(2*totalwars) + "\n");
             }
             ps.print("\nWarriors:,score,alive,bytes\n");
             for (WarriorGroup group : warriorGroups) {
