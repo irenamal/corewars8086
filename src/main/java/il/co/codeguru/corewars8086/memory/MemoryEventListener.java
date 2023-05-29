@@ -12,5 +12,6 @@ public interface MemoryEventListener extends EventListener {
      * Called when a byte is written to memory
      * @param address
      */
-    void onMemoryWrite(RealModeAddress address);
+
+    boolean onMemoryWrite(RealModeAddress address);
 }

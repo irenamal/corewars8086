@@ -719,14 +719,12 @@ public class Cpu {
                 break;
             case (byte)0xA2: // MOV [imm16], AL
                 address = new RealModeAddress(m_state.getDS(), m_fetcher.nextWord());
-                m_memory.writeByte(address, m_state.getAL());
+                return m_memory.writeByte(address, m_state.getAL());
                 //break;
-                return 1;
             case (byte)0xA3: // MOV [imm16], AX
                 address = new RealModeAddress(m_state.getDS(), m_fetcher.nextWord());
-                m_memory.writeWord(address, m_state.getAX());
+                return m_memory.writeWord(address, m_state.getAX());
                 //break;
-                return 2;
             case (byte)0xA4: // MOVSB
                 return movsb();
                 //break;
@@ -1448,8 +1446,7 @@ public class Cpu {
         m_state.setSP((short)(m_state.getSP() - 2));
         RealModeAddress stackPtr = new RealModeAddress(
             m_state.getSS(), m_state.getSP());
-        m_memory.writeWord(stackPtr, value);
-        return 2;
+        return m_memory.writeWord(stackPtr, value);
     }
 
     private short pop() throws MemoryException {
@@ -1725,9 +1722,9 @@ public class Cpu {
      * @throws MemoryException
      */
     private int callNear(short offset) throws MemoryException {
-        push(m_state.getIP());
+        int new_writes = push(m_state.getIP());
         m_state.setIP(offset);
-        return 2;
+        return new_writes;
     }
 
     /**
@@ -1737,9 +1734,9 @@ public class Cpu {
      * @throws MemoryException
      */
     private int callFar(short segment, short offset) throws MemoryException {
-        push(m_state.getCS());				
+        int new_writes = push(m_state.getCS());
         m_state.setCS(segment);
-        return 2 + callNear(offset);
+        return new_writes + callNear(offset);
     }
 
     /**
@@ -1751,12 +1748,12 @@ public class Cpu {
             new RealModeAddress(m_state.getDS(), m_state.getSI());
         RealModeAddress dst =
             new RealModeAddress(m_state.getES(), m_state.getDI());
-        m_memory.writeByte(dst, m_memory.readByte(src));
+        int new_writes = m_memory.writeByte(dst, m_memory.readByte(src));
 
         byte diff = (m_state.getDirectionFlag() ? (byte)-1 : (byte)1); 
         m_state.setSI((short)(m_state.getSI() + diff));
         m_state.setDI((short)(m_state.getDI() + diff));
-        return 1;
+        return new_writes;
     }
 
     /**
@@ -1768,12 +1765,12 @@ public class Cpu {
             new RealModeAddress(m_state.getDS(), m_state.getSI());
         RealModeAddress dst =
             new RealModeAddress(m_state.getES(), m_state.getDI());
-        m_memory.writeWord(dst, m_memory.readWord(src));
+        int new_writes = m_memory.writeWord(dst, m_memory.readWord(src));
 
         byte diff = (m_state.getDirectionFlag() ? (byte)-2 : (byte)2); 
         m_state.setSI((short)(m_state.getSI() + diff));
         m_state.setDI((short)(m_state.getDI() + diff));
-        return 2;
+        return new_writes;
     }
 
     /**
@@ -1815,10 +1812,10 @@ public class Cpu {
     private int stosb() throws MemoryException {
         RealModeAddress address =
             new RealModeAddress(m_state.getES(), m_state.getDI());
-        m_memory.writeByte(address, m_state.getAL());
+        int new_writes = m_memory.writeByte(address, m_state.getAL());
         byte diff = (m_state.getDirectionFlag() ? (byte)-1 : (byte)1); 
         m_state.setDI((short)(m_state.getDI() + diff));
-        return 1;
+        return new_writes;
     }
 
     /**
@@ -1828,10 +1825,10 @@ public class Cpu {
     private int stosw() throws MemoryException {
         RealModeAddress address =
             new RealModeAddress(m_state.getES(), m_state.getDI());
-        m_memory.writeWord(address, m_state.getAX());
+        int new_writes = m_memory.writeWord(address, m_state.getAX());
         byte diff = (m_state.getDirectionFlag() ? (byte)-2 : (byte)2); 
         m_state.setDI((short)(m_state.getDI() + diff));
-        return 2;
+        return new_writes;
     }
 
     /**
@@ -1841,15 +1838,15 @@ public class Cpu {
     private int stosdw() throws MemoryException {
         RealModeAddress address1 =
             new RealModeAddress(m_state.getES(), m_state.getDI());
-        m_memory.writeWord(address1, m_state.getAX());
+        int new_writes = m_memory.writeWord(address1, m_state.getAX());
 
         RealModeAddress address2 =
             new RealModeAddress(m_state.getES(), (short)(m_state.getDI() + 2));
-        m_memory.writeWord(address2, m_state.getDX());
+        new_writes += m_memory.writeWord(address2, m_state.getDX());
 
         byte diff = (m_state.getDirectionFlag() ? (byte)-4 : (byte)4); 
         m_state.setDI((short)(m_state.getDI() + diff));
-        return 4;
+        return new_writes;
     }
 
     /**
@@ -2226,9 +2223,8 @@ public class Cpu {
                         m_state.getES(), (short)(m_state.getDI() + diff + 2));
                     if (m_memory.readWord(address2) == m_state.getDX()) {
                         // found!
-                        m_memory.writeWord(address1, m_state.getBX());
-                        m_memory.writeWord(address2, m_state.getCX());
-                        written_bytes += 4;
+                        written_bytes += m_memory.writeWord(address1, m_state.getBX());
+                        written_bytes += m_memory.writeWord(address2, m_state.getCX());
                         break;
                     }
                 }

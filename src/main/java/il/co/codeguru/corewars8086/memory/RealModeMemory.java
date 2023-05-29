@@ -30,23 +30,23 @@ public interface RealModeMemory {
     /**
      * Writes a single byte to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  on any error. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException on any error.
      */
-    public abstract void writeByte(RealModeAddress address, byte value)
+    public abstract int writeByte(RealModeAddress address, byte value)
         throws MemoryException;
 
     /**
      * Writes a single word to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  on any error. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException on any error.
      */	
-    public abstract void writeWord(RealModeAddress address, short value)
+    public abstract int writeWord(RealModeAddress address, short value)
         throws MemoryException;
 
     /**

@@ -65,8 +65,9 @@ public class EventMulticaster {
             throws Throwable {
             
             isCasting = true;
+            Object return_val = null;
 			for (EventListener mListener : mListenersArr) {
-				pMethod.invoke(mListener, pArgs);
+				return_val = pMethod.invoke(mListener, pArgs);
 			}
             isCasting = false;
             if (!mWaitingListeners.isEmpty()) {
@@ -76,7 +77,7 @@ public class EventMulticaster {
             	}
             	mWaitingListeners.clear();
             }
-            return null;
+            return return_val;
         }
     } 
 }

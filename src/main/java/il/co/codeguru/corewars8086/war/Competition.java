@@ -1,6 +1,7 @@
 package il.co.codeguru.corewars8086.war;
 
 import il.co.codeguru.corewars8086.cli.Options;
+import il.co.codeguru.corewars8086.gui.WarFrame;
 import il.co.codeguru.corewars8086.memory.MemoryEventListener;
 import il.co.codeguru.corewars8086.utils.EventMulticaster;
 import org.apache.commons.math3.util.Precision;
@@ -190,7 +191,7 @@ public class Competition {
         }
 
         int finalRound = round; // we're here after the war termination
-        alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
+        //alive_time.forEach((k , v) -> alive_time.put(k, Precision.round(v/ finalRound, 3)));
         currentWar.updateScores(warriorRepository, alive_time, finalRound);
         //currentWar.updateAliveTime(warriorRepository, alive_time);
         currentWar = null;

@@ -48,18 +48,18 @@ public class RestrictedAccessRealModeMemory extends AbstractRealModeMemory {
     /**
      * Writes a single byte to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  if writing is not allowed to this address. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException if writing is not allowed to this address.
      */
-    public void writeByte(RealModeAddress address, byte value) throws MemoryException {
+    public int writeByte(RealModeAddress address, byte value) throws MemoryException {
         // is writing allowed to this address ?
         if (!isAddressInRegions(m_writeAccessRegions, address)) {
             throw new MemoryException();			
         }
 
-        m_memory.writeByte(address, value);
+        return m_memory.writeByte(address, value);
     }
 
     /**

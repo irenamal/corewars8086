@@ -156,11 +156,11 @@ public class War {
     public boolean isOver() {
         return (m_numWarriorsAlive < 2);
     }
-	
+
     /**
      * Decrements the warrior's Energy value, if the current round is
      * a multiple of DECELERATION_ROUNDS.
-     * 
+     *
      * @param warrior The warrior.
      * @param round   Current round number.
      */
@@ -173,19 +173,19 @@ public class War {
             }
         }
     }
-	
+
     /**
      * Determines whether or not a given warrior deserves an extra opcode,
      * by calculating the warrior's current speed (using its current Energy
      * value), and comparing it against a random value.
-     * 
+     *
      * We use a random-based algorithm (as opposed to a deterministic one) for
      * the following reasons:
      *  a) simple implementation - there is no need to keep record of past
      *     decisions as our algorithm is stateless.
      *  b) we want the warrior's speed to vary between x1.0 to x2.0, and this
      *     solves the issue of determining what to do if the current speed is x1.7 :)
-     * 
+     *
      * @param warrior The warrior.
      * @return true if the warrior deserves an extra opcode, otherwise
      * returns false.
@@ -198,17 +198,17 @@ public class War {
     }
 
     /** Maximum possible Warrior speed. */
-    private final int MAX_SPEED = 16; // when Energy = 0xFFFF 
-    /** Warrior's Energy is decremented every so often rounds. */ 
+    private final int MAX_SPEED = 16; // when Energy = 0xFFFF
+    /** Warrior's Energy is decremented every so often rounds. */
     private final int DECELERATION_ROUNDS = 5;
-	
+
     /**
      * Returns the warrior's current speed, using the following formula:
      * Speed := Min(MAX_SPEED, 1+Log2(Energy))
-     * 
+     *
      * This formula forces the warrior to put more and more effort in order to
      * increase its speed, i.e. non-linear effort.
-     *  
+     *
      * @param energy The warrior's Energy value.
      * @return the warrior's current speed,
      */
@@ -219,7 +219,7 @@ public class War {
             return Math.min(MAX_SPEED, 1 + (int)(Math.log(energy) / Math.log(2)));
         }
     }
-	
+
     private void loadWarriorGroup(WarriorGroup warriorGroup) throws Exception {
         List<WarriorData> warriors = warriorGroup.getWarriors();
 
@@ -236,7 +236,7 @@ public class War {
             short loadOffset = getLoadOffset(warriorData.length);
 
             RealModeAddress loadAddress =
-                    new RealModeAddress(ARENA_SEGMENT, loadOffset); 
+                    new RealModeAddress(ARENA_SEGMENT, loadOffset);
             RealModeAddress stackMemory = allocateCoreMemory(STACK_SIZE);
             RealModeAddress initialStack =
                 new RealModeAddress(stackMemory.getSegment(), STACK_SIZE);
@@ -255,22 +255,22 @@ public class War {
             // load warrior to arena
             for (int offset = 0; offset < warriorData.length; ++offset) {
                 RealModeAddress tmp = new RealModeAddress(ARENA_SEGMENT, (short)(loadOffset + offset));
-                m_core.writeByte(tmp, warriorData[offset]);			
+                m_core.writeByte(tmp, warriorData[offset]);
             }
             ++m_numWarriorsAlive;
 			++m_currentWarrior;
 
             // notify listener
-            m_warListener.onWarriorBirth(warriorName);		
+            m_warListener.onWarriorBirth(warriorName);
         }
     }
 
     /**
      * Virtually allocates core memory of a given size, by advancing the
      * next-free-memory pointer (m_nextFreeAddress).
-     * 
+     *
      * @param size   Required memory size, must be a multiple of
-     *               RealModeAddress.PARAGRAPH_SIZE 
+     *               RealModeAddress.PARAGRAPH_SIZE
      * @return Pointer to the beginning of the allocated memory block.
      */
     private RealModeAddress allocateCoreMemory(short size) throws Exception {
@@ -285,16 +285,16 @@ public class War {
 
         return allocatedMemory;
     }
-	
+
     /**
      * Returns a suitable random address to which a warrior with a given code
      * size can be loaded.
-     * 
+     *
      * A suitable address is-
      *  1. far enough from the Arena's boundaries.
      *  2. far enough from other loaded warriors.
-     * 
-     * @param warriorSize   Code size of the loaded warrior. 
+     *
+     * @param warriorSize   Code size of the loaded warrior.
      * @return offset within the Arena to which the warrior can be loaded.
      * @throws Exception if no suitable address could be found.
      */
@@ -337,7 +337,7 @@ public class War {
 
         return (short)loadAddress;
     }
-	
+
     /**
      * @return Returns the currentWarrior.
      */
@@ -354,12 +354,12 @@ public class War {
     public int getNumWarriors() {
         return m_numWarriors;
     }
-    
+
     /** @return the number of warriors still alive. */
     public int getNumRemainingWarriors() {
     	return m_numWarriorsAlive;
     }
-    
+
     /** @return a comma-seperated list of all warriors still alive. */
     public String getRemainingWarriorNames() {
         String names = "";
@@ -375,7 +375,7 @@ public class War {
     	}
     	return names;
     }
- 
+
     /**
      * Updates the scores in a given score-board.
      */
@@ -384,11 +384,9 @@ public class War {
     	for (int i = 0; i < m_numWarriors; ++i) {
             Warrior warrior = m_warriors[i];
             if (warrior.isAlive()) {
-                repository.addScore(warrior.getName(), score, alive_time.get(warrior.getName()),
-                        Precision.round((float)warrior.getBytesWritten()/ (2 * finalRound), 3));
+                repository.addScore(warrior.getName(), score, alive_time.get(warrior.getName()), warrior.getBytesWritten());
             } else {
-                repository.addScore(warrior.getName(), 0, alive_time.get(warrior.getName()),
-                        Precision.round((float)warrior.getBytesWritten()/ (2 * finalRound), 3));
+                repository.addScore(warrior.getName(), 0, alive_time.get(warrior.getName()),warrior.getBytesWritten());
             }
     	}
     }

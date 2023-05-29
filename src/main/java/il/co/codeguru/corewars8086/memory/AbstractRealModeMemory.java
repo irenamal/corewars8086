@@ -44,35 +44,36 @@ public abstract class AbstractRealModeMemory implements RealModeMemory {
     /**
      * Writes a single byte to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  on any error. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException on any error.
      */
-    public abstract void writeByte(RealModeAddress address, byte value)
+    public abstract int writeByte(RealModeAddress address, byte value)
         throws MemoryException;
 
     /**
      * Writes a single word to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  on any error. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException on any error.
      */	
-    public void writeWord(RealModeAddress address, short value)
+    public int writeWord(RealModeAddress address, short value)
         throws MemoryException {
-
+        int new_writes = 0;
         byte low = (byte)value;
         byte high = (byte)(value >> 8);
 
         // write low byte
-        writeByte(address, low);
+        new_writes += writeByte(address, low);
 
         // write high byte
         RealModeAddress nextAddress = new RealModeAddress(
             address.getSegment(), (short)(address.getOffset() + 1));
-        writeByte(nextAddress, high);		
+        new_writes += writeByte(nextAddress, high);
+        return new_writes;
     }
 
     /**

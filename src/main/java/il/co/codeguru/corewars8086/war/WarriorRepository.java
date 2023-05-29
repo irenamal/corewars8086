@@ -230,20 +230,26 @@ public class WarriorRepository {
         
         try (FileOutputStream fos = new FileOutputStream(filename)) {
             PrintStream ps = new PrintStream(fos);
-            ps.print("Groups:,score,alive,bytes\n");
+            ps.print("Groups:,score,alive,bytes,rate\n");
             for (WarriorGroup group : warriorGroups) {
-                ps.print(group.getName() + "," + group.getGroupScore()/totalwars + "," +
-                         Collections.max(group.getAliveTime())/totalwars + "," + group.getGroupBytes()/(2*totalwars) + "\n");
+                ps.print(group.getName() + "," +
+                         group.getGroupScore()/totalwars + "," +
+                         Math.log10(Math.max(1, Collections.max(group.getAliveTime())/totalwars)) + "," +
+                         Math.log10(Math.max(1, group.getGroupBytes()/totalwars)) + "," +
+                         group.getGroupBytes()/Math.max(1, Collections.max(group.getAliveTime()))/totalwars + "\n");
             }
-            ps.print("\nWarriors:,score,alive,bytes\n");
+            ps.print("\nWarriors:,score,alive,bytes,rate\n");
             for (WarriorGroup group : warriorGroups) {
                 List<Float> scores = group.getScores();
                 List<Float> aliveTime = group.getAliveTime();
                 List<WarriorData> data = group.getWarriors();
                 List<Float> bytesWritten = group.getBytesWritten();
                 for (int i = 0; i < scores.size(); i++) {
-                    ps.print(data.get(i).getName() + "," + scores.get(i)/totalwars + "," + aliveTime.get(i)/totalwars + "," +
-                             bytesWritten.get(i)/totalwars + "\n");
+                    ps.print(data.get(i).getName() + "," +
+                             scores.get(i)/totalwars + "," +
+                             Math.log10(Math.max(1, aliveTime.get(i)/totalwars)) + "," +
+                             Math.log10(Math.max(1, bytesWritten.get(i)/totalwars)) + "," +
+                             bytesWritten.get(i)/Math.max(1, aliveTime.get(i))/totalwars + "\n");
                 }
             }
         } catch (IOException e) {

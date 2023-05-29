@@ -35,16 +35,22 @@ public class RealModeMemoryImpl extends AbstractRealModeMemory {
     /**
      * Writes a single byte to the specified address.
      *
-     * @param address    Real-mode address to write to.
-     * @param value      Data to write.
-     * 
-     * @throws MemoryException  on any error. 
+     * @param address Real-mode address to write to.
+     * @param value   Data to write.
+     * @return
+     * @throws MemoryException on any error.
      */
-    public void writeByte(RealModeAddress address, byte value) {
+    public int writeByte(RealModeAddress address, byte value) {
         m_data[address.getLinearAddress()] = value;
         if (listener != null) {
-            listener.onMemoryWrite(address);
+            boolean is_new_write = listener.onMemoryWrite(address);
+            if (is_new_write) {
+                // Write to new place in memory was performed by the warrior
+                return 1;
+            }
         }
+        // The warrior wrote to a place it already was the last to write in
+        return 0;
     }
 
     /**

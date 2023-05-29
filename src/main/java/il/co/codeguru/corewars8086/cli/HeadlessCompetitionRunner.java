@@ -1,6 +1,7 @@
 package il.co.codeguru.corewars8086.cli;
 
 import com.google.common.primitives.Longs;
+import il.co.codeguru.corewars8086.gui.WarFrame;
 import il.co.codeguru.corewars8086.war.Competition;
 import il.co.codeguru.corewars8086.war.CompetitionEventListener;
 import il.co.codeguru.corewars8086.war.ScoreEventListener;
@@ -34,6 +35,9 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
     
     this.competition = new Competition(options);
     this.competition.addCompetitionEventListener(this);
+    this.competition.setSpeed(100);
+    this.competition.addMemoryEventLister(new WarFrame(this.competition));
+    this.competition.setSpeed(Competition.MAXIMUM_SPEED);
     WarriorRepository repository = competition.getWarriorRepository();
     //System.out.printf("Loaded warriors: %s%n", Arrays.toString(repository.getGroupNames()));
     repository.addScoreEventListener(this);

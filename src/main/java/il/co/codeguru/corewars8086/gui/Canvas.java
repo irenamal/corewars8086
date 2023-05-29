@@ -50,6 +50,12 @@ public class Canvas extends JComponent implements MouseInputListener {
         return getMinimumSize();
     }
 
+	public byte getPixelColor(int number) {
+		int x = number % BOARD_SIZE;
+		int y = number / BOARD_SIZE;
+		return data[x][y];
+	}
+
     public void paintPixel(int number, byte color) {
         paintPixel(number % BOARD_SIZE, number / BOARD_SIZE, color);
     }

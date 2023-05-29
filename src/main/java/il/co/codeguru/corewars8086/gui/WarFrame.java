@@ -190,14 +190,20 @@ public class WarFrame extends JFrame
     }	
 
     /** @see MemoryEventListener#onMemoryWrite(RealModeAddress) */
-    public void onMemoryWrite(RealModeAddress address) {
+    public boolean onMemoryWrite(RealModeAddress address) {
 		int ipInsideArena = address.getLinearAddress() - 0x1000 *0x10; // arena * paragraph
 		
-        if ( address.getLinearAddress() >= War.ARENA_SEGMENT*0x10 && address.getLinearAddress() < 2*War.ARENA_SEGMENT*0x10 ) {
-        	warCanvas.paintPixel(
-        			Unsigned.unsignedShort(ipInsideArena),
-        			(byte)competition.getCurrentWarrior());
+        if (address.getLinearAddress() >= War.ARENA_SEGMENT*0x10 && address.getLinearAddress() < 2*War.ARENA_SEGMENT*0x10 ) {
+        	byte new_color = (byte)competition.getCurrentWarrior();
+            byte prev_color = warCanvas.getPixelColor(Unsigned.unsignedShort(ipInsideArena));
+            if (prev_color == new_color) {
+                // no new write was made to the memory, same warrior writes to same place
+                return false;
+            }
+            warCanvas.paintPixel(Unsigned.unsignedShort(ipInsideArena), new_color);
+            return true;
         }
+        return false;
     }
 
     /** @see CompetitionEventListener#onWarStart(long) */
