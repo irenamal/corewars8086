@@ -30,13 +30,16 @@ public class Canvas extends JComponent implements MouseInputListener {
 
 	private int MouseX, MouseY;
 
-    public Canvas() {
+	private boolean headless;
+
+    public Canvas(boolean headless) {
 		eventCaster = new EventMulticaster(MouseAddressRequest.class);
 		eventHandler = (MouseAddressRequest) eventCaster.getProxy();
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 		this.MouseX = 0;
 		this.MouseY = 0;
+		this.headless = headless;
         clear();
     }
 
@@ -62,11 +65,13 @@ public class Canvas extends JComponent implements MouseInputListener {
 
     public void paintPixel(int x, int y, byte color) {
         data[x][y] = color;
-        Graphics g = getGraphics();
-        if (g != null) {
-            g.setColor(ColorHolder.getInstance().getColor(color,false));
-            g.fillRect(x * DOT_SIZE, y * DOT_SIZE, DOT_SIZE, DOT_SIZE);
-        }
+		if (! this.headless) {
+			Graphics g = getGraphics();
+			if (g != null) {
+				g.setColor(ColorHolder.getInstance().getColor(color, false));
+				g.fillRect(x * DOT_SIZE, y * DOT_SIZE, DOT_SIZE, DOT_SIZE);
+			}
+		}
     }
 
     /** 

@@ -230,7 +230,7 @@ public class CompetitionWindow extends JFrame
     
     private void showBattleRoom() {
         competition.setSpeed(5);
-        battleFrame = new WarFrame(competition);
+        battleFrame = new WarFrame(competition, false);
         battleFrame.addWindowListener(new WindowListener() {
             public void windowOpened(WindowEvent e) {
             }

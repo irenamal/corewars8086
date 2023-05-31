@@ -36,7 +36,7 @@ public class HeadlessCompetitionRunner implements ScoreEventListener, Competitio
     this.competition = new Competition(options);
     this.competition.addCompetitionEventListener(this);
     this.competition.setSpeed(100);
-    this.competition.addMemoryEventLister(new WarFrame(this.competition));
+    this.competition.addMemoryEventLister(new WarFrame(this.competition, true));
     this.competition.setSpeed(Competition.MAXIMUM_SPEED);
     WarriorRepository repository = competition.getWarriorRepository();
     //System.out.printf("Loaded warriors: %s%n", Arrays.toString(repository.getGroupNames()));
