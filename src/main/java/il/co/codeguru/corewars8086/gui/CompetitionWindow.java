@@ -68,7 +68,8 @@ public class CompetitionWindow extends JFrame
         buttonPanel.add(Box.createHorizontalStrut(30));
         showBattleCheckBox = new JCheckBox("Show war on start");
         buttonPanel.add(showBattleCheckBox);
-        
+        showBattleCheckBox.setSelected(true);
+
         startPausedCheckBox = new JCheckBox("Start Paused");
         startPausedCheckBox.setEnabled(!options.parallel); // TODO enable functionality in 5.0.1
         startPausedCheckBox.addActionListener(event -> {
@@ -230,7 +231,7 @@ public class CompetitionWindow extends JFrame
     
     private void showBattleRoom() {
         competition.setSpeed(5);
-        battleFrame = new WarFrame(competition, false);
+        battleFrame = new WarFrame(competition, options.headless);
         battleFrame.addWindowListener(new WindowListener() {
             public void windowOpened(WindowEvent e) {
             }

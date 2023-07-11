@@ -6,6 +6,7 @@ import il.co.codeguru.corewars8086.utils.Unsigned;
 import il.co.codeguru.corewars8086.war.*;
 
 import java.awt.*;
+import java.awt.event.WindowListener;
 import java.util.Enumeration;
 
 import javax.swing.*;
@@ -67,13 +68,15 @@ public class WarFrame extends JFrame
         this.competition = competition;
         this.headless = headless;
 
-        JPanel canvasPanel = new JPanel();
-        canvasPanel.setBorder(BorderFactory.createCompoundBorder(
-                              BorderFactory.createLineBorder(new Color(169, 154, 133), 3),
-                              BorderFactory.createEmptyBorder(10, 10, 20, 10)));
-        canvasPanel.setBackground(Color.BLACK);
         warCanvas = new Canvas(this.headless);
-        canvasPanel.add(warCanvas);
+
+        if (! this.headless) {
+            JPanel canvasPanel = new JPanel();
+            canvasPanel.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(169, 154, 133), 3),
+                    BorderFactory.createEmptyBorder(10, 10, 20, 10)));
+            canvasPanel.setBackground(Color.BLACK);
+            canvasPanel.add(warCanvas);
 
         if (! this.headless) {
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);

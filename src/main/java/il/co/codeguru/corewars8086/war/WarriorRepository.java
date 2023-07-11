@@ -252,6 +252,8 @@ public class WarriorRepository {
                              bytesWritten.get(i)/Math.max(1, aliveTime.get(i))/totalwars + "\n");
                 }
             }
+            ps.flush();
+            ps.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

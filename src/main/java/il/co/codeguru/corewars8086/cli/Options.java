@@ -25,7 +25,7 @@ public class Options extends OptionsBase {
       abbrev = 'c',
       help = "The size of each group combination",
       category = "Gameplay",
-      defaultValue = "4"
+      defaultValue = "2"
   )
   public int combinationSize;
   
@@ -60,7 +60,7 @@ public class Options extends OptionsBase {
       abbrev = 'p',
       help = "Run multiple battles concurrently - cancel for (pre-)cgx2022 result emulation",
       category = "Concurrency",
-      defaultValue = "true"
+      defaultValue = "false"
   )
   public boolean parallel;
   
@@ -69,7 +69,7 @@ public class Options extends OptionsBase {
       abbrev = 't',
       help = "Number of threads for parallel mode",
       category = "Concurrency",
-      defaultValue = "32"
+      defaultValue = "8"
   )
   public int threads;
   
