@@ -34,7 +34,7 @@ public class Options extends OptionsBase {
       abbrev = 'b',
       help = "Battles per group combination",
       category = "Gameplay",
-      defaultValue = "2"
+      defaultValue = "200"
   )
   public int battlesPerCombo;
   
@@ -69,7 +69,7 @@ public class Options extends OptionsBase {
       abbrev = 't',
       help = "Number of threads for parallel mode",
       category = "Concurrency",
-      defaultValue = "8"
+      defaultValue = "4"
   )
   public int threads;
   

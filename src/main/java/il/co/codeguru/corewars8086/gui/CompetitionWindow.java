@@ -276,8 +276,8 @@ public class CompetitionWindow extends JFrame
             battleFrameRect.x = getWidth();
         }
         
-        battleFrame.setBounds(battleFrameRect);
-        battleFrame.setVisible(true);
+        //battleFrame.setBounds(battleFrameRect);
+        //battleFrame.setVisible(true);
     }
     
     public void onWarEnd(int reason, String winners) {

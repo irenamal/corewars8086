@@ -25,7 +25,7 @@ import javax.swing.*;
  * 
  * @author BS
  */
-public class WarFrame extends JFrame
+public class WarFrame //extends JFrame
     implements MemoryEventListener,  CompetitionEventListener, MouseAddressRequest{
 	private static final long serialVersionUID = 1L;
 
@@ -64,7 +64,7 @@ public class WarFrame extends JFrame
     private boolean headless;
 
     public WarFrame(final Competition competition, boolean headless) {
-        super("CodeGuru Extreme - Session Viewer");
+        //super("CodeGuru Extreme - Session Viewer");
         this.competition = competition;
         this.headless = headless;
 
@@ -78,111 +78,112 @@ public class WarFrame extends JFrame
             canvasPanel.setBackground(Color.BLACK);
             canvasPanel.add(warCanvas);
 
-        if (! this.headless) {
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            if (!this.headless) {
+                //setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-            getContentPane().setLayout(new BorderLayout());
+                //getContentPane().setLayout(new BorderLayout());
 
-            // build widgets
-            JPanel mainPanel = new JPanel(new BorderLayout());
+                // build widgets
+                JPanel mainPanel = new JPanel(new BorderLayout());
 
-            // build war zone (canvas + title)
-            JPanel warZone = new JPanel(new BorderLayout());
-            warZone.setBackground(Color.BLACK);
+                // build war zone (canvas + title)
+                JPanel warZone = new JPanel(new BorderLayout());
+                warZone.setBackground(Color.BLACK);
 
 
-            warZone.add(canvasPanel, BorderLayout.CENTER);
+                warZone.add(canvasPanel, BorderLayout.CENTER);
 
-            //warZone.add(new JLabel(new ImageIcon("images/warzone.jpg")), BorderLayout.NORTH);
-            mainPanel.add(warZone, BorderLayout.CENTER);
+                //warZone.add(new JLabel(new ImageIcon("images/warzone.jpg")), BorderLayout.NORTH);
+                mainPanel.add(warZone, BorderLayout.CENTER);
 
-            // build info zone (message area + buttons)
-            JPanel infoZone = new JPanel(new BorderLayout());
-            messagesArea = new JTextArea(5, 60);
-            messagesArea.setFont(new Font("Tahoma", Font.PLAIN, 12));
+                // build info zone (message area + buttons)
+                JPanel infoZone = new JPanel(new BorderLayout());
+                messagesArea = new JTextArea(5, 60);
+                messagesArea.setFont(new Font("Tahoma", Font.PLAIN, 12));
 
-            infoZone.add(new JScrollPane(messagesArea), BorderLayout.CENTER);
+                infoZone.add(new JScrollPane(messagesArea), BorderLayout.CENTER);
 
-            JPanel buttonPanel = new JPanel();
+                JPanel buttonPanel = new JPanel();
 
-            buttonPanel.add(new JLabel("Round:"));
-            roundNumber = new JTextField(4);
-            roundNumber.setEditable(false);
-            buttonPanel.add(roundNumber);
-            buttonPanel.add(Box.createHorizontalStrut(20));
-            JButton closeButton = new JButton("Close");
-            closeButton.addActionListener(e -> dispose());
-            buttonPanel.add(closeButton);
-            buttonPanel.add(Box.createHorizontalStrut(20));
-            buttonPanel.add(new JLabel("Speed:"));
-            speedSlider = new JSlider(1, 100, competition.getSpeed());
-            speedSlider.addChangeListener(e -> {
-                WarFrame.this.competition.setSpeed((int) Math.pow(1.2, speedSlider.getValue())); //exponential speed slider
-            });
-            buttonPanel.add(speedSlider);
-            nRoundNumber = 0;
-            infoZone.add(buttonPanel, BorderLayout.SOUTH);
-            infoZone.setBackground(Color.black);
+                buttonPanel.add(new JLabel("Round:"));
+                roundNumber = new JTextField(4);
+                roundNumber.setEditable(false);
+                buttonPanel.add(roundNumber);
+                buttonPanel.add(Box.createHorizontalStrut(20));
+                JButton closeButton = new JButton("Close");
+                closeButton.addActionListener(e -> dispose());
+                buttonPanel.add(closeButton);
+                buttonPanel.add(Box.createHorizontalStrut(20));
+                buttonPanel.add(new JLabel("Speed:"));
+                speedSlider = new JSlider(1, 100, competition.getSpeed());
+                speedSlider.addChangeListener(e -> {
+                    WarFrame.this.competition.setSpeed((int) Math.pow(1.2, speedSlider.getValue())); //exponential speed slider
+                });
+                buttonPanel.add(speedSlider);
+                nRoundNumber = 0;
+                infoZone.add(buttonPanel, BorderLayout.SOUTH);
+                infoZone.setBackground(Color.black);
 
-            // Debugger
-            addressFiled = new JLabel("Click on the arena to see the memory");
-            warCanvas.addListener(this);
+                // Debugger
+                addressFiled = new JLabel("Click on the arena to see the memory");
+                warCanvas.addListener(this);
 
-            btnCpuState = new JButton("View CPU");
-            btnCpuState.setEnabled(false);
-            btnCpuState.addActionListener(event -> {
-                cpuFrame = new CpuFrame(competition);
-                WarFrame.this.competition.addCompetitionEventListener(cpuFrame);
-            });
+                btnCpuState = new JButton("View CPU");
+                btnCpuState.setEnabled(false);
+                btnCpuState.addActionListener(event -> {
+                    cpuFrame = new CpuFrame(competition);
+                    WarFrame.this.competition.addCompetitionEventListener(cpuFrame);
+                });
 
-            competition.addCompetitionEventListener(this);
+                competition.addCompetitionEventListener(this);
 
-            btnPause = new JButton("Pause");
-            btnPause.setEnabled(false);
-            btnPause.addActionListener(event -> {
-                if (competition.getCurrentWar().isPaused()) {
-                    competition.getCurrentWar().resume();
-                    btnPause.setText("Pause");
-                    btnSingleRound.setEnabled(false);
-                } else {
-                    competition.getCurrentWar().pause();
-                    btnPause.setText("Resume");
-                    btnSingleRound.setEnabled(true);
-                }
+                btnPause = new JButton("Pause");
+                btnPause.setEnabled(false);
+                btnPause.addActionListener(event -> {
+                    if (competition.getCurrentWar().isPaused()) {
+                        competition.getCurrentWar().resume();
+                        btnPause.setText("Pause");
+                        btnSingleRound.setEnabled(false);
+                    } else {
+                        competition.getCurrentWar().pause();
+                        btnPause.setText("Resume");
+                        btnSingleRound.setEnabled(true);
+                    }
 
-            });
+                });
 
-            btnSingleRound = new JButton("Single Round");
-            btnSingleRound.setEnabled(false);
-            btnSingleRound.addActionListener(event -> competition.getCurrentWar().runSingleRound());
+                btnSingleRound = new JButton("Single Round");
+                btnSingleRound.setEnabled(false);
+                btnSingleRound.addActionListener(event -> competition.getCurrentWar().runSingleRound());
 
-            buttonPanel.add(btnCpuState);
-            buttonPanel.add(btnPause);
-            buttonPanel.add(btnSingleRound);
-            buttonPanel.add(addressFiled);
+                buttonPanel.add(btnCpuState);
+                buttonPanel.add(btnPause);
+                buttonPanel.add(btnSingleRound);
+                buttonPanel.add(addressFiled);
 
-            // build warrior zone (warrior list + title)
-            JPanel warriorZone = new JPanel(new BorderLayout());
-            warriorZone.setBackground(Color.BLACK);
-            nameListModel = new DefaultListModel();
-            nameList = new JList(nameListModel);
-            nameList.setPreferredSize(new Dimension(200, 0));
-            nameList.setCellRenderer(new NameCellRenderer());
-            nameList.setOpaque(false);
-            nameList.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(169, 154, 133), 3),
-                    BorderFactory.createEmptyBorder(10, 10, 20, 10)));
-            nameList.repaint();
-            warriorZone.add(nameList, BorderLayout.CENTER);
-            //warriorZone.add(new JLabel(new ImageIcon("images/warriors.jpg")), BorderLayout.NORTH);
-            warriorZone.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
-            mainPanel.add(warriorZone, BorderLayout.EAST);
+                // build warrior zone (warrior list + title)
+                JPanel warriorZone = new JPanel(new BorderLayout());
+                warriorZone.setBackground(Color.BLACK);
+                nameListModel = new DefaultListModel();
+                nameList = new JList(nameListModel);
+                nameList.setPreferredSize(new Dimension(200, 0));
+                nameList.setCellRenderer(new NameCellRenderer());
+                nameList.setOpaque(false);
+                nameList.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(169, 154, 133), 3),
+                        BorderFactory.createEmptyBorder(10, 10, 20, 10)));
+                nameList.repaint();
+                warriorZone.add(nameList, BorderLayout.CENTER);
+                //warriorZone.add(new JLabel(new ImageIcon("images/warriors.jpg")), BorderLayout.NORTH);
+                warriorZone.add(Box.createHorizontalStrut(20), BorderLayout.WEST);
+                mainPanel.add(warriorZone, BorderLayout.EAST);
 
-            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            getContentPane().setBackground(Color.BLACK);
-            getContentPane().add(mainPanel, BorderLayout.CENTER);
-            //getContentPane().add(new JLabel(new ImageIcon("images/title2.png")), BorderLayout.EAST);
-            getContentPane().add(infoZone, BorderLayout.SOUTH);
+                /*setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                getContentPane().setBackground(Color.BLACK);
+                getContentPane().add(mainPanel, BorderLayout.CENTER);
+                //getContentPane().add(new JLabel(new ImageIcon("images/title2.png")), BorderLayout.EAST);
+                getContentPane().add(infoZone, BorderLayout.SOUTH);*/
+            }
         }
     }
 
@@ -269,7 +270,7 @@ public class WarFrame extends JFrame
         nameListModel.addElement(new WarriorInfo(warriorName));
     }
 
-    /** @see CompetitionEventListener#onWarriorDeath(String) */
+    /** */
     public void onWarriorDeath(String warriorName, String reason) {
         addMessage(nRoundNumber, warriorName + " died due to " + reason + ".");
         Enumeration namesListElements = nameListModel.elements();
@@ -287,7 +288,10 @@ public class WarFrame extends JFrame
                 nameList.repaint();
             }
         });
-    }	
+    }
+
+    public void addWindowListener(WindowListener windowListener) {
+    }
 
     /**
      * A renderer for the names on the warrior list. 
@@ -373,7 +377,7 @@ public class WarFrame extends JFrame
 			}
 	}
 
-	@Override
+	//@Override
 	public void dispose() {
 
 		// bug fix - event casted while window is being disposed FIXME find a
@@ -395,7 +399,7 @@ public class WarFrame extends JFrame
 		// restoring maximum speed
 		competition.getCurrentWar().resume();
 		competition.setSpeed(Competition.MAXIMUM_SPEED);
-		super.dispose();
+		//super.dispose();
 	}
 
 	@Override
