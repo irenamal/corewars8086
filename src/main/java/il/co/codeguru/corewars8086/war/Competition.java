@@ -7,7 +7,9 @@ import il.co.codeguru.corewars8086.utils.EventMulticaster;
 import org.apache.commons.math3.util.Precision;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,12 +71,27 @@ public class Competition {
         // run on every possible combination of warrior groups
         competitionEventListener.onCompetitionStart();
         int runWarCount = 0;
-        for (int warCount = 0; warCount < getTotalNumberOfWars(); warCount++) {
-            WarriorGroup[] groups = warriorRepository.createGroupList(competitionIterator.next());
-            if (null == groups) // skip wars without my survivor
+        List<WarriorGroup> groups = warriorRepository.getWarriorGroups();
+        String[] names = warriorRepository.getGroupNames();
+        int my_index = 0;
+        for (String name : names) {
+            if (name.matches("[0-9]+try")) {
+                break;
+            }
+            my_index++;
+
+        }
+        for (int warCount = 0; warCount < warriorRepository.getNumberOfGroups(); warCount++) {
+            if (groups.get(warCount).getName().matches("[0-9]+try")) {
                 continue;
-            runWarCount++;
-            runWar(groups, startPaused);
+            }
+            WarriorGroup[] game_groups = new WarriorGroup[2];
+            game_groups[0] = groups.get(my_index);
+            game_groups[1] = groups.get(warCount);
+            for (int run_index = 0 ; run_index < options.battlesPerCombo; run_index++) {
+                runWarCount++;
+                runWar(game_groups, startPaused);
+            }
             seed ++;
             if (abort) {
 				        break;

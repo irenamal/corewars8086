@@ -226,17 +226,22 @@ public class WarriorRepository {
     }
 
     public void saveScoresToFile(String filename, int totalwars) {
-        //System.out.printf("Writing scores to file %s%n", filename);
-        
         try (FileOutputStream fos = new FileOutputStream(filename)) {
+            int ran_wars = totalwars / (getNumberOfGroups() - 1);
             PrintStream ps = new PrintStream(fos);
             ps.print("Groups:,score,alive,bytes,rate\n");
             for (WarriorGroup group : warriorGroups) {
+                if (group.getName().matches("[0-9]+try")) {
+                    ran_wars = totalwars;
+                }
+                else {
+                    ran_wars = totalwars / (getNumberOfGroups() - 1);
+                }
                 ps.print(group.getName() + "," +
-                         group.getGroupScore()/totalwars + "," +
-                         Math.log10(Math.max(1, Collections.max(group.getAliveTime())/totalwars)) + "," +
-                         Math.log10(Math.max(1, group.getGroupBytes()/totalwars)) + "," +
-                         group.getGroupBytes()/Math.max(1, Collections.max(group.getAliveTime()))/totalwars + "\n");
+                         group.getGroupScore()/ran_wars + "," +
+                         Math.log10(Math.max(1, Collections.max(group.getAliveTime())/ran_wars)) + "," +
+                         Math.log10(Math.max(1, group.getGroupBytes()/ran_wars)) + "," +
+                         group.getGroupBytes()/Math.max(1, Collections.max(group.getAliveTime()))/ran_wars + "\n");
             }
             ps.print("\nWarriors:,score,alive,bytes,rate\n");
             for (WarriorGroup group : warriorGroups) {
@@ -244,12 +249,18 @@ public class WarriorRepository {
                 List<Float> aliveTime = group.getAliveTime();
                 List<WarriorData> data = group.getWarriors();
                 List<Float> bytesWritten = group.getBytesWritten();
+                if (group.getName().matches("[0-9]+try")) {
+                    ran_wars = totalwars;
+                }
+                else {
+                    ran_wars = totalwars / (getNumberOfGroups() - 1);
+                }
                 for (int i = 0; i < scores.size(); i++) {
                     ps.print(data.get(i).getName() + "," +
-                             scores.get(i)/totalwars + "," +
-                             Math.log10(Math.max(1, aliveTime.get(i)/totalwars)) + "," +
-                             Math.log10(Math.max(1, bytesWritten.get(i)/totalwars)) + "," +
-                             bytesWritten.get(i)/Math.max(1, aliveTime.get(i))/totalwars + "\n");
+                             scores.get(i)/ran_wars + "," +
+                             Math.log10(Math.max(1, aliveTime.get(i)/ran_wars)) + "," +
+                             Math.log10(Math.max(1, bytesWritten.get(i)/ran_wars)) + "," +
+                             bytesWritten.get(i)/Math.max(1, aliveTime.get(i))/ran_wars + "\n");
                 }
             }
             ps.flush();
